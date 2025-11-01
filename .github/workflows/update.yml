@@ -2,8 +2,11 @@ name: Update 280blocker List
 
 on:
   schedule:
-    - cron: '0 15 * * 0'  # 日本時間で日曜0時（UTC 15時）
+    - cron: '0 15 * * 0'
   workflow_dispatch:
+
+permissions:
+  contents: write  # ← 追加
 
 jobs:
   update:
