@@ -1,0 +1,28 @@
+name: Update 280blocker List
+
+on:
+  schedule:
+    - cron: '0 15 * * 0'  # 日本時間で日曜0時（UTC 15時）
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download 280blocker list
+        run: |
+          curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" \
+               -e "https://280blocker.net/" \
+               -o 280blocker.txt \
+               https://280blocker.net/files/280blocker_adblock.txt
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add 280blocker.txt
+          git commit -m "Update 280blocker list" || echo "No changes to commit"
+          git push
